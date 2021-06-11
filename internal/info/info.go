@@ -2,7 +2,7 @@ package info
 
 var (
 	// AppName is the name of the Application.
-	AppName = "go-cli" //nolint:gochecknoglobals // versioning
+	AppName = "go-password" //nolint:gochecknoglobals // versioning
 
 	// Version of the application. Value will be update during build
 	// with ldflags.

@@ -1,4 +1,4 @@
-module github.com/omegion/go-cli
+module github.com/omegion/go-password
 
 go 1.16
 

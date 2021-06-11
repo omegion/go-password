@@ -46,7 +46,7 @@ jobs:
           context: ./
           file: ./Dockerfile
           push: true
-          tags: ghcr.io/omegion/go-cli:latest,ghcr.io/omegion/go-cli:${{ steps.get_version.outputs.VERSION }}
+          tags: ghcr.io/omegion/go-password:latest,ghcr.io/omegion/go-password:${{ steps.get_version.outputs.VERSION }}
           platforms: linux/amd64,linux/arm64
 
       - name: Build Changelog

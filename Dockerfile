@@ -6,7 +6,7 @@ FROM --platform=${BUILDPLATFORM} golang:${GO_VERSION} AS builder
 ARG TARGETOS
 ARG TARGETARCH
 
-LABEL org.opencontainers.image.source="https://github.com/omegion/go-cli-template"
+LABEL org.opencontainers.image.source="https://github.com/omegion/go-password"
 
 WORKDIR /app
 
@@ -22,6 +22,6 @@ RUN make build TARGETOS=$TARGETOS TARGETARCH=$TARGETARCH
 
 FROM ${FROM_IMAGE}
 
-COPY --from=builder /app/dist/go-cli /bin/go-cli
+COPY --from=builder /app/dist/go-password /bin/go-password
 
-ENTRYPOINT ["go-cli"]
+ENTRYPOINT ["go-password"]

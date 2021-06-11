@@ -1,6 +1,6 @@
 export PATH := $(abspath ./vendor/bin):$(PATH)
 
-BASE_PACKAGE_NAME  = github.com/omegion/go-cli
+BASE_PACKAGE_NAME  = github.com/omegion/go-password
 GIT_VERSION 	   = $(shell git describe --tags --always 2> /dev/null || echo 0.0.0)
 LDFLAGS            = -ldflags "-X $(BASE_PACKAGE_NAME)/internal/info.Version=$(GIT_VERSION)"
 BUFFER            := $(shell mktemp)
@@ -11,7 +11,7 @@ TARGETARCH		   = "amd64"
 
 .PHONY: build
 build:
-	CGO_ENABLED=0 GOOS=$(TARGETOS) GOARCH=$(TARGETARCH) go build $(LDFLAGS) -a -installsuffix cgo -o dist/go-cli main.go
+	CGO_ENABLED=0 GOOS=$(TARGETOS) GOARCH=$(TARGETARCH) go build $(LDFLAGS) -a -installsuffix cgo -o dist/go-password main.go
 
 .PHONY: lint
 lint:
@@ -41,11 +41,11 @@ cut-tag:
 .PHONY: release
 release: build
 	@echo "Releasing $(GIT_VERSION)"
-	docker build -t go-cli .
-	docker tag go-cli:latest omegion/go-cli:$(GIT_VERSION)
-	docker push omegion/go-cli:$(GIT_VERSION)
+	docker build -t go-password .
+	docker tag go-password:latest omegion/go-password:$(GIT_VERSION)
+	docker push omegion/go-password:$(GIT_VERSION)
 
 .PHONY: docker-image
 docker-image:
 	@echo "Building Docker Image"
-	docker buildx build -t go-cli-template --platform linux/amd64,linux/arm64 . --output=type=docker
+	docker buildx build -t go-password-template --platform linux/amd64,linux/arm64 . --output=type=docker
