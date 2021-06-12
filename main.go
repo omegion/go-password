@@ -1,11 +1,12 @@
 package main
 
 import (
-	"github.com/omegion/go-password/cmd"
 	"os"
 
 	cmdr "github.com/omegion/cobra-commander"
 	"github.com/spf13/cobra"
+
+	"github.com/omegion/go-password/cmd"
 )
 
 func main() {

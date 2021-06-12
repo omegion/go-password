@@ -2,7 +2,8 @@ package cmd
 
 import (
 	"fmt"
-	"github.com/omegion/go-password/internal/controller"
+
+	"github.com/sethvargo/go-password/password"
 	"github.com/spf13/cobra"
 )
 
@@ -13,29 +14,29 @@ func Generate() *cobra.Command {
 		Short: "Generates new random password",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			length, _ := cmd.Flags().GetInt("length")
-			numbers, _ := cmd.Flags().GetBool("numbers")
-			uppercase, _ := cmd.Flags().GetBool("uppercase")
-			lowercase, _ := cmd.Flags().GetBool("lowercase")
-			symbols, _ := cmd.Flags().GetBool("symbols")
+			numbers, _ := cmd.Flags().GetInt("numbers")
+			symbols, _ := cmd.Flags().GetInt("symbols")
+			allowUppercase, _ := cmd.Flags().GetBool("allow-uppercase")
+			allowRepeat, _ := cmd.Flags().GetBool("allow-repeat")
 			custom, _ := cmd.Flags().GetString("custom")
 
-			gen := controller.NewGenerator()
-			gen.Length = &length
-			gen.Numbers = numbers
-			gen.Uppercase = uppercase
-			gen.Lowercase = lowercase
-			gen.Symbols = symbols
-
-			if custom != "" {
-				gen.ExtraSymbols = custom
+			input := password.GeneratorInput{
+				Symbols: custom,
 			}
 
-			str, err := gen.Generate()
+			gen, err := password.NewGenerator(&input)
 			if err != nil {
 				return err
 			}
 
-			fmt.Println(str)
+			res, err := gen.Generate(length, numbers, symbols, !allowUppercase, allowRepeat)
+			if err != nil {
+				return err
+			}
+
+			//nolint:forbidigo // allow to print.
+			fmt.Println(res)
+
 			return nil
 		},
 	}
@@ -47,10 +48,10 @@ func Generate() *cobra.Command {
 
 // setupAddCommand sets default flags.
 func setupGetCommand(cmd *cobra.Command) {
-	cmd.Flags().Int("length", 8, "Vault Address")
-	cmd.Flags().Bool("numbers", true, "Vault Address")
-	cmd.Flags().Bool("uppercase", true, "Vault Address")
-	cmd.Flags().Bool("lowercase", true, "Vault Address")
-	cmd.Flags().Bool("symbols", true, "Vault Address")
-	cmd.Flags().String("custom", "", "Vault Address")
+	cmd.Flags().Int("length", 16, "Length of the generated password")
+	cmd.Flags().Int("numbers", 4, "Count of numbers")
+	cmd.Flags().Int("symbols", 4, "Count of symbols")
+	cmd.Flags().Bool("allow-uppercase", true, "Allow uppercase characters")
+	cmd.Flags().Bool("allow-repeat", false, "Allow to repeat characters")
+	cmd.Flags().String("custom", "", "Custom symbols e.g. \".+=\"")
 }
