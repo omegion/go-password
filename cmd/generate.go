@@ -7,7 +7,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
-// Generate prints version/build.
+// Generate generates password with given params.
 func Generate() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "generate",
